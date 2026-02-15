@@ -33,8 +33,16 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+
+                
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/users/**").permitAll()   // testing
+                .requestMatchers("/api/users/**").permitAll()      
+                .requestMatchers("/api/recruiters/**").permitAll()
+
+                
+                .requestMatchers("/api/admin/**").permitAll()
+
+                
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess ->
@@ -45,6 +53,8 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
 
 
     // 🔥 THIS FIXES CORS

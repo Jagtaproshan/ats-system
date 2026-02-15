@@ -2,8 +2,8 @@ package com.jobportal.JobApplicationTracker.dto;
 
 public class RecruiterProfileDTO {
 
-    private int recruiterId;
-    private int userId;
+    private Integer recruiterId;
+    private Integer userId;
     private String companyName;
     private String companyDescription;
     private boolean approvalStatus;

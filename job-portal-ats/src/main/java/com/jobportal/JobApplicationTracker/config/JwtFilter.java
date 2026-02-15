@@ -1,6 +1,8 @@
 package com.jobportal.JobApplicationTracker.config;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,8 +18,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -44,23 +44,30 @@ public class JwtFilter extends OncePerRequestFilter {
             if (email != null &&
                 SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                User user = userRepository.findByEmail(email);
+                // ✅ CHANGE START
+                Optional<User> optionalUser =
+                        userRepository.findByEmail(email);
 
-                if (user != null) {
+                if (optionalUser.isPresent()) {
+
+                    User user = optionalUser.get();
+
                     UsernamePasswordAuthenticationToken auth =
                             new UsernamePasswordAuthenticationToken(
                                     user.getEmail(),
                                     null,
-                                    List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+                                    List.of(new SimpleGrantedAuthority(
+                                            "ROLE_" + user.getRole()))
                             );
 
-                    SecurityContextHolder.getContext().setAuthentication(auth);
+                    SecurityContextHolder
+                            .getContext()
+                            .setAuthentication(auth);
                 }
+                // ✅ CHANGE END
             }
         }
 
         filterChain.doFilter(request, response);
     }
 }
-
-

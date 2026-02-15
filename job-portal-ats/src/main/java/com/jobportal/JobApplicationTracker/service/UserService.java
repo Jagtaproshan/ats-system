@@ -1,6 +1,9 @@
 package com.jobportal.JobApplicationTracker.service;
+
 import java.util.List;
 
+import com.jobportal.JobApplicationTracker.dto.AuthRequestDTO;
+import com.jobportal.JobApplicationTracker.dto.AuthResponseDTO;
 import com.jobportal.JobApplicationTracker.dto.UserDTO;
 
 public interface UserService {
@@ -16,5 +19,9 @@ public interface UserService {
     void deleteUser(int id);
 
     void updateUserStatus(int userId, String status);
-}
 
+    UserDTO getUserByEmail(String email);
+
+    // ✅ LOGIN
+    AuthResponseDTO login(AuthRequestDTO request);
+}

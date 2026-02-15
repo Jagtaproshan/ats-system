@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.jobportal.JobApplicationTracker.dto.AuthRequestDTO;
+import com.jobportal.JobApplicationTracker.dto.AuthResponseDTO;
 import com.jobportal.JobApplicationTracker.dto.UserDTO;
 import com.jobportal.JobApplicationTracker.service.UserService;
 
@@ -24,31 +26,50 @@ public class UserController {
     // ✅ CREATE USER
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO dto) {
-        return new ResponseEntity<>(service.createUser(dto), HttpStatus.CREATED);
+        UserDTO createdUser = service.createUser(dto);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    // GET user By ID
+    // ✅ GET USER BY ID
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Integer id) {
-        return new ResponseEntity<>(service.getUserById(id), HttpStatus.OK);
+        UserDTO user = service.getUserById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    // Get All Users
+    // ✅ GET ALL USERS
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
-        return new ResponseEntity<>(service.getAllUsers(), HttpStatus.OK);
+        List<UserDTO> users = service.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    // Update user
+    // ✅ UPDATE USER
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Integer id, @RequestBody UserDTO dto) {
-        return new ResponseEntity<>(service.updateUser(id, dto), HttpStatus.OK);
+    public ResponseEntity<UserDTO> updateUser(
+            @PathVariable Integer id,
+            @RequestBody UserDTO dto) {
+
+        UserDTO updatedUser = service.updateUser(id, dto);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
-    // Delete user
+    // ✅ DELETE USER
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
         service.deleteUser(id);
-        return new ResponseEntity<>("User Deleted Successfully!", HttpStatus.OK);
+        return new ResponseEntity<>(
+                "User Deleted Successfully!",
+                HttpStatus.OK);
+    }
+
+    // ✅ LOGIN API
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponseDTO> login(
+            @RequestBody AuthRequestDTO request) {
+
+        AuthResponseDTO response = service.login(request);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
